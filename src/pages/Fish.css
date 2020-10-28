@@ -1,0 +1,16 @@
+.checklist-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 200px;
+    justify-content: space-between;
+}
+
+.checkbox {
+    background-color: #1F75FE;
+    background-image: url("../assets/tick.png");
+    background-size: cover;
+    border: 1px solid black;
+    height: 20px;
+    width: 20px;
+  }
