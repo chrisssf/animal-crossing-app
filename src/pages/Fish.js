@@ -1,4 +1,4 @@
-// alphabetical order please!!!!!!!!!!
+// alphabetical order please!!!!!!!!!! DONE!!!!!!!!!!!
 // capatialize first letter!!!!!!!!!!!
 // put in table to center words, images and checkboxes!!!!!!!!!!!
 
@@ -25,20 +25,28 @@ const Fish = () => {
       const fishChecklist = () => {
         const fishChecklistElements = []
         const provisionalCollectedFish = collectedFish.concat()
-        for (const fish in allFishData){
+
+        const allFishDataOrderedAlphabetically = {};
+            Object.keys(allFishData).sort().forEach(key => {
+                allFishDataOrderedAlphabetically[key] = allFishData[key];
+        });
+
+
+        for (const fish in allFishDataOrderedAlphabetically){
             fishChecklistElements.push(
-                <div className="checklist-container">
-                    <h3>{allFishData[fish].name["name-EUen"]}</h3>
-                    <img src={allFishData[fish]["image_uri"]} className="fish-image"></img>
-                    {provisionalCollectedFish.includes(allFishData[fish].id) ? 
-                        <div className="checkbox" onClick={() => handleUncheck(fish, provisionalCollectedFish)}></div>
-                    :
-                        <div className="empty-checkbox" onClick={() => handleCheck(fish, provisionalCollectedFish)}></div>
-                    }
-                </div>
+            <tr>
+                <td>{allFishData[fish].name["name-EUen"]}</td>
+                <td><img src={allFishData[fish]["image_uri"]} className="fish-image"></img></td>
+                <td>{provisionalCollectedFish.includes(allFishData[fish].id) ? 
+                    <div className="checkbox" onClick={() => handleUncheck(fish, provisionalCollectedFish)}></div>
+                :
+                    <div className="empty-checkbox" onClick={() => handleCheck(fish, provisionalCollectedFish)}></div>
+                }
+                </td>
+            </tr>
             )
         }
-        return fishChecklistElements
+        return (<table>{fishChecklistElements}</table>)
       }
 
       const handleUncheck = (fish, provisionalCollectedFish) =>{

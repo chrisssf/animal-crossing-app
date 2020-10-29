@@ -10,15 +10,6 @@
     /* background-color: #FF6347; */
 }
 
-.checklist-container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 500px;
-    justify-content: space-between;
-    justify-self: center;
-}
-
 .checkbox {
     /* for fish........ */
     background-color: #0a2351;
