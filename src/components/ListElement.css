@@ -1,0 +1,58 @@
+table {
+  margin: 0px 10px;
+}
+
+.name {
+    font-weight: bold;
+    font-size: 20px;
+    text-transform: capitalize;
+}
+
+.bugs-checkbox {
+    /* for fish........ */
+    /* background-color: #0a2351; */
+
+    /*for bugs........*/
+    background-color: #8B0000;
+
+    background-image: url("../assets/tick.png");
+    background-size: cover;
+    border: 1px solid black;
+    height: 40px;
+    width: 40px;
+  }
+
+  .fish-checkbox {
+    /* for fish........ */
+    background-color: #0a2351;
+
+    /*for bugs........*/
+    /* background-color: #8B0000; */
+
+    background-image: url("../assets/tick.png");
+    background-size: cover;
+    border: 1px solid black;
+    height: 40px;
+    width: 40px;
+  }
+
+  .empty-checkbox {
+    border: 1px solid black;
+    height: 40px;
+    width: 40px;
+  }
+
+  
+  .image {
+      height: 100px;
+      padding-right: 15px;
+      /* width: 70px; */
+  }
+
+  /* .image {
+    height:725px;
+    max-width:500px;
+    width: expression(this.width > 500 ? 500: true)
+  } */
+
+  /* <img style="height:725px;max-width:500px;width: expression(this.width > 500 ? 500: true);" id="img_DocPreview" src="Images/empty.jpg" /> */
