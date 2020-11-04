@@ -42,11 +42,22 @@ table {
     width: 40px;
   }
 
-  
-  .image {
+
+  @media screen and (min-width: 450px) {
+    .list-image {
       height: 100px;
+      /* width: 30vw; */
       padding-right: 15px;
       /* width: 70px; */
+    }
+  }
+  @media screen and (max-width: 450px) {
+    .list-image {
+      /* height: 100px; */
+      width: 30vw;
+      padding-right: 15px;
+      /* width: 70px; */
+    }
   }
 
   /* .image {

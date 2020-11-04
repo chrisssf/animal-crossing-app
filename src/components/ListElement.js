@@ -1,8 +1,8 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import './ListElement.css'
 import DetailsOverlay from './DetailsOverlay'
 
-const ListElement = ({animal, animalCategory, allAnimalsData, provisionalCollectedAnimals, setCollectedAnimals}) => {
+const ListElement = ({ animal, animalCategory, allAnimalsData, provisionalCollectedAnimals, setCollectedAnimals, updateCollectedAnimalsinDB }) => {
 
     const [showDetailOverlay, setShowDetailOverlay] = useState(false)
 
@@ -10,11 +10,13 @@ const ListElement = ({animal, animalCategory, allAnimalsData, provisionalCollect
         const index = provisionalCollectedAnimals.findIndex((animalId) => animalId === allAnimalsData[animal].id)
         provisionalCollectedAnimals.splice(index, 1)
         setCollectedAnimals(provisionalCollectedAnimals)
+        updateCollectedAnimalsinDB(provisionalCollectedAnimals)
       }
 
       const handleCheck = (animal, provisionalCollectedAnimals) =>{
         provisionalCollectedAnimals.push(allAnimalsData[animal].id)
         setCollectedAnimals(provisionalCollectedAnimals)
+        updateCollectedAnimalsinDB(provisionalCollectedAnimals)
       }
 
     return (
@@ -22,7 +24,7 @@ const ListElement = ({animal, animalCategory, allAnimalsData, provisionalCollect
             <tr>
                 {/* <td>{Modal(fishName)}</td> */}
                 <td><p onClick={() => setShowDetailOverlay(true)} className="name">{allAnimalsData[animal].name["name-EUen"]}</p></td>
-                <td><img src={allAnimalsData[animal]["image_uri"]} className="image"></img></td>
+                <td><img src={allAnimalsData[animal]["image_uri"]} className="list-image"></img></td>
                 <td>{provisionalCollectedAnimals.includes(allAnimalsData[animal].id) ? 
                     <div className={animalCategory + "-checkbox"} onClick={() => handleUncheck(animal, provisionalCollectedAnimals)}></div>
                 :

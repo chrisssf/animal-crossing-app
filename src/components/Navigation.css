@@ -1,0 +1,19 @@
+/* .navbar{
+    float: right;
+
+} */
+
+.dropdown {
+    /* position: absolute; */
+    /* right: 20px;
+    top: 14px; */
+    font-size: 20px;
+    grid-area: menu;
+    padding: 0px;
+    justify-self: right;
+    /* margin-top: 0; */
+}
+
+#basic-nav-dropdown {
+    padding: 0px
+}

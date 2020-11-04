@@ -1,11 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import ListElement from '../components/ListElement';
+import ListElement from '../components/ListElement.js';
+import Navigation from '../components/Navigation.js'
+
+import firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/firestore";
+import db from '../FirebaseConfig';
 
 import './Animal.css';
 
 
-const Animal = ({animalCategory}) => {
 
+const Animal = ({ animalCategory, userId }) => {
+
+  // firebase.auth().onAuthStateChanged((user) => {
+  //   if (user) {
+  //     // User is signed in.
+  //     var displayName = user.displayName;
+  //     var email = user.email;
+  //     var emailVerified = user.emailVerified;
+  //     var photoURL = user.photoURL;
+  //     var isAnonymous = user.isAnonymous;
+  //     var uid = setUserIDDD(user.uid);
+  //     var providerData = user.providerData;
+  //     // ...
+  //   } else {
+  //     // User is signed out.
+  //     // ...
+  //   }
+  // });
+  
     const [allAnimalsData, setAllAnimalsData] = useState([])
     const [dataRetreived, setDataRetrieved] = useState(false)
     const [collectedAnimals, setCollectedAnimals] = useState([])
@@ -14,13 +38,39 @@ const Animal = ({animalCategory}) => {
         fetch('http://acnhapi.com/v1/' + animalCategory)
           .then(res => res.json())
           .then(animals => setAllAnimalsData(animals))
+          .then(() => getAnimalsCollectedFromDatabase())
           .then(() => setDataRetrieved(true))
-        //   .then(() => console.log("boo", allFishData.bitterling.name["name-EUen"]))
-
-        // console.log("animalCategory", animalCategory)
+ 
+        // getAnimalsCollectedFromDatabase()
       }, [])
 
-      
+      const updateCollectedAnimalsinDB = (changeThisCollectedAniamls) => {
+        firebase.auth().onAuthStateChanged((user) => {
+          if (user) {
+            const userRef = db.collection("users").doc(user.uid)
+            return userRef.update({bugs_checked: changeThisCollectedAniamls})
+            // make this animalCategory not bugs!!!!!!!!!!!!!
+            .catch(error => console.log(error))
+          }
+        })
+      }
+
+      const getAnimalsCollectedFromDatabase = async () => {
+        firebase.auth().onAuthStateChanged( async (user) => {
+          if (user) {
+            const userRef = db.collection("users").doc(user.uid)
+            const doc = await userRef.get()
+            if(!doc.exists){
+              console.log("No such document")
+            } else {
+              console.log("here")
+              setCollectedAnimals(doc.data().bugs_checked)
+              // THIS NEEDS CHANGED TO animalCategory!!!!!!!!!!!!!!!!!--------------
+            }
+          }
+        })
+      }
+
       const animalsChecklist = () => {
         const animalsChecklistElements = []
         const provisionalCollectedAnimals = collectedAnimals.concat()
@@ -32,8 +82,6 @@ const Animal = ({animalCategory}) => {
 
 
         for (const animal in allAnimalsDataOrderedAlphabetically){
-            // const bugName = allBugshData[bug].name["name-EUen"].toString()
-            // console.log(bugName)
             animalsChecklistElements.push(
               <ListElement 
                 animal={animal} 
@@ -41,15 +89,20 @@ const Animal = ({animalCategory}) => {
                 allAnimalsData={allAnimalsData} 
                 provisionalCollectedAnimals={provisionalCollectedAnimals} 
                 setCollectedAnimals={setCollectedAnimals}
+                updateCollectedAnimalsinDB={updateCollectedAnimalsinDB}
               />
             )
         }
+        console.log(provisionalCollectedAnimals)
         return (<table>{animalsChecklistElements}</table>)
       }
 
     return (
       <div className="animal-container">
-        <h2 className="animal-title">{animalCategory}</h2>
+        <div className="header">
+          <Navigation />
+          <h2 className="animal-title">{animalCategory}</h2>
+        </div>
         <div className={animalCategory + "-container"}>
         <p>Homepage/register/login <br/> Heroku<br/>Firebase!!!</p>
             {dataRetreived && animalsChecklist()}

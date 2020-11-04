@@ -1,14 +1,22 @@
 /* .animal-container {
   overflow: hidden;
 } */
+.header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-areas: "menu title" ;
+  background-color: #f6d7b0; 
+
+}
 
 .animal-title {
   font-weight: bold;
   font-size: 34px;
   text-transform: capitalize;
-  background-color: #f6d7b0;
   margin: 0px;
   padding: 25px 0;
+  grid-area: title;
+  justify-self: center;
 }
 
 .bugs-container {
