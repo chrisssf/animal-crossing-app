@@ -45,10 +45,18 @@ const Animal = ({ animalCategory, userId }) => {
       }, [])
 
       const updateCollectedAnimalsinDB = (changeThisCollectedAniamls) => {
+        let databaseField = ""
+      
+        if(animalCategory === "bugs") {
+          databaseField = "bugs_checked"
+        } else if ( animalCategory === "fish"){
+          databaseField = "fish_checked"
+        }
+        
         firebase.auth().onAuthStateChanged((user) => {
           if (user) {
             const userRef = db.collection("users").doc(user.uid)
-            return userRef.update({bugs_checked: changeThisCollectedAniamls})
+            return userRef.update({[databaseField]: changeThisCollectedAniamls})
             // make this animalCategory not bugs!!!!!!!!!!!!!
             .catch(error => console.log(error))
           }
@@ -56,6 +64,14 @@ const Animal = ({ animalCategory, userId }) => {
       }
 
       const getAnimalsCollectedFromDatabase = async () => {
+        let databaseField = ""
+      
+        if(animalCategory === "bugs") {
+          databaseField = "bugs_checked"
+        } else if ( animalCategory === "fish"){
+          databaseField = "fish_checked"
+        }
+        
         firebase.auth().onAuthStateChanged( async (user) => {
           if (user) {
             const userRef = db.collection("users").doc(user.uid)
@@ -64,7 +80,7 @@ const Animal = ({ animalCategory, userId }) => {
               console.log("No such document")
             } else {
               console.log("here")
-              setCollectedAnimals(doc.data().bugs_checked)
+              setCollectedAnimals(doc.data()[databaseField])
               // THIS NEEDS CHANGED TO animalCategory!!!!!!!!!!!!!!!!!--------------
             }
           }
