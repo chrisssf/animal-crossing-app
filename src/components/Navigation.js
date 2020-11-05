@@ -1,5 +1,7 @@
 import React from 'react'
 import { Link } from "react-router-dom";
+import firebase from "firebase/app";
+import "firebase/auth";
 // import {Navbar, Nav, NavDropdown} from 'react-bootstrap'
 // import Navbar from 'react-bootstrap/Navbar'
 // import Nav from 'react-bootstrap/Nav'
@@ -10,6 +12,17 @@ import './Navigation.css'
 
 const Navigation = () => {
 
+    const handleLogOut = () => { 
+        firebase.auth().signOut()
+        .then(() => {
+            // Sign-out successful.
+            console.log("out")
+        }).catch(function(error) {
+            // An error happened.
+            console.log(error)
+
+        })
+    }
 
     return (
         <div className="navbar">
@@ -17,7 +30,7 @@ const Navigation = () => {
                 <NavDropdown.Item href="/bugs">Bugs</NavDropdown.Item>
                 <NavDropdown.Item href='/fish'>Fish</NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item href="/">Sign Out</NavDropdown.Item>
+                <NavDropdown.Item href="/" onClick={() => handleLogOut()}>Sign Out</NavDropdown.Item>
             </NavDropdown>
         </div>
     )

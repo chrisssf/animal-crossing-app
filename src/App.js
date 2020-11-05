@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route } from "react-router-dom"
 import './App.css';
 
@@ -10,20 +10,16 @@ import Home from './pages/Home'
 
 function App() {
 
-  const [ userId, setUserId ] = useState(null)
-
   return (
     <>
-
       <Router>
         <div className="App">
-          <Route exact path="/" render={() => <Home setUserId={setUserId} userId={userId} />} />
-          <Route path="/bugs" render={() => <Animal animalCategory="bugs" userId={userId}/>} />
-          <Route path="/fish" render={() => <Animal animalCategory="fish" userId={userId}/>} />
+          <Route exact path="/" render={() => <Home />} />
+          <Route path="/bugs" render={() => <Animal animalCategory="bugs" />} />
+          <Route path="/fish" render={() => <Animal animalCategory="fish" />} />
 
         </div>
       </Router>
-
 
       {/* // <div className="App">
       //     <Animal animalCategory={"bugs"} />
