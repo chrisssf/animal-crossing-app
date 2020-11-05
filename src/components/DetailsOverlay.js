@@ -46,6 +46,17 @@ const DetailOverlay = ({item, listType, show, setShowDetailOverlay}) => {
         )
     }
 
+    const hasFake =() => {
+        return item["hasFake"] ? "Yes" : "No"
+    }
+
+    const museumText = () => {
+        return listType === "art" ? item["museum-desc"] : item["museum-phrase"]
+    }
+
+
+
+
 <a href="#weather-description"></a>
     return (
         <>
@@ -53,15 +64,18 @@ const DetailOverlay = ({item, listType, show, setShowDetailOverlay}) => {
                 <div className="overlay">
                     <h1 className="overlay-name">{item.name["name-EUen"]}</h1>
                     <img src={item["image_uri"]} className="overlay-image"></img>
-                    <p>{item["catch-phrase"]}</p>
-                    <p><b>Price:</b> {item["price"]}</p>
+                    {listType !== "art" && <p>{item["catch-phrase"]}</p>}
+                    {listType !== "art" &&<p><b>Price:</b> {item["price"]}</p>}
                     {listType === "bugs" && <p><b>Flick Price:</b> {item["price-flick"]}</p>}
                     {listType === "fish" && <p><b>CJ Price:</b> {item["price-cj"]}</p>}
+                    {listType === "art" && <p><b>Buy Price: </b>{item["buy-price"]}</p>}
+                    {listType === "art" && <p><b>Sell Price:</b> {item["sell-price"]}</p>}
+                    {listType === "art" && <p><b>Has Fake?: </b>{hasFake()}</p>}
                     <p className="close-overlay" onClick={() => setShowDetailOverlay(false)}>Close</p>
-                    <p className="overlay-button" onClick={() => setShowCatchingInfo(!showCatchingInfo)}>{showCatchingInfo ? "Hide" : "Show"} Catching Information</p>
+                    {listType !== "art" && <p className="overlay-button" onClick={() => setShowCatchingInfo(!showCatchingInfo)}>{showCatchingInfo ? "Hide" : "Show"} Catching Information</p>}
                     {showCatchingInfo && formatCatchingInfo()}
                     <p className="overlay-button" onClick={() => setShowMuseumText(!showMuseumText)}>{showMuseumText ? "Hide" : "Show"} Museum Text</p>
-                    {showMuseumText && <><p>{item["museum-phrase"]}</p></>}
+                    {showMuseumText && <><p>{museumText()}</p></>}
                     <div ref={overlayEnd} />
                 </div>
             }
