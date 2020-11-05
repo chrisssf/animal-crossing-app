@@ -12,25 +12,13 @@ import './Navigation.css'
 
 const Navigation = () => {
 
-    const handleLogOut = () => { 
-        firebase.auth().signOut()
-        .then(() => {
-            // Sign-out successful.
-            console.log("out")
-        }).catch(function(error) {
-            // An error happened.
-            console.log(error)
-
-        })
-    }
-
     return (
         <div className="navbar">
             <NavDropdown className="dropdown" title="Menu" id="basic-nav-dropdown">
                 <NavDropdown.Item href="/bugs">Bugs</NavDropdown.Item>
                 <NavDropdown.Item href='/fish'>Fish</NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item href="/" onClick={() => handleLogOut()}>Sign Out</NavDropdown.Item>
+                <NavDropdown.Item href="/">Home</NavDropdown.Item>
             </NavDropdown>
         </div>
     )

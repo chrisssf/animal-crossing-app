@@ -1,4 +1,5 @@
-import React, {useState} from 'react'
+import React, { useState, useEffect } from 'react'
+import './Home.css'
 import Navigation from '../components/Navigation.js'
 import { Link } from "react-router-dom";
 
@@ -13,28 +14,56 @@ const Home = () => {
 
     const [ registerEmail, setRegisterEmail ] = useState("");
     const [ registerPassword, setRegisterPassword ] = useState("");
-    const [ registerName, setRegisterName] = useState("")
+    const [ confirmRegisterPassword, setConfirmRegisterPassword ] = useState("")
     const [ loginEmail, setLoginEmail ] = useState("");
     const [ loginPassword, setLoginPassword ] = useState("");
     const [ showRegisterForm, setShowRegisterForm ] = useState(false)
     const [ isLoggedIn, setIsLoggedIn ] = useState(false)
+    const [ currentUser, setCurrentUser ] = useState({})
     // const [ userId, setUserId ] = useState(null)
+
+    useEffect(() =>{
+        getUser()
+    }, [])
+
+    const getUser = () => {
+        firebase.auth().onAuthStateChanged( async (user) => {
+          if (user) {
+            console.log(user)
+            setCurrentUser(user)
+            setIsLoggedIn(true)
+          } else {
+            setCurrentUser({})
+          }
+        })
+        console.log("currentUser", currentUser)
+      }
 
     const handleRegister = async (e) => {
         e.preventDefault()
-        firebase
-        .auth()
-        .createUserWithEmailAndPassword(registerEmail, registerPassword)
-        .then(async data => {
-            const dataToAdd = {
-                fish_checked: [],
-                bugs_checked: [],
-                // name: registerName
-            }
-            const addUser = await db.collection("users").doc(data.user.uid).set(dataToAdd)
-            setIsLoggedIn(true)
-        })
-        .catch(error => console.log(error))
+        if (confirmRegisterPassword === registerPassword){
+            firebase
+            .auth()
+            .createUserWithEmailAndPassword(registerEmail, registerPassword)
+            .then(async data => {
+                const dataToAdd = {
+                    fish_checked: [],
+                    bugs_checked: [],
+                    // name: registerName
+                }
+                const addUser = await db.collection("users").doc(data.user.uid).set(dataToAdd)
+                setIsLoggedIn(true)
+            })
+            .catch(error => console.log(error))
+
+            setRegisterEmail("")
+            setRegisterPassword("")
+            setConfirmRegisterPassword("")
+
+        }
+        else {
+            console.log("Passwords don't match")
+        }
     }
 
     // const auth = firebase.app().auth();
@@ -48,9 +77,13 @@ const Home = () => {
         .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
         .then(() => firebase.auth().signInWithEmailAndPassword(loginEmail, loginPassword))
         .then(() => {
+            setLoginEmail("")
+            setLoginPassword("")
             setIsLoggedIn(true)
         })
         .catch(error => console.log(error))
+
+        
 
         // firebase
         // .auth()
@@ -67,50 +100,73 @@ const Home = () => {
         // }
     }
 
-    // const [email, setEmail] = useState("")
-    // const [password, setPassword] = useState("")
+    const handleLogOut = () => { 
 
-    // const handleLogin = (e) => {
-    //     e.preventDefault()
-    //     console.log(e)
-    // }
+        // firebase.auth().onAuthStateChanged((user) => {
+        //     if (user) {
+        //         console.log("user")
+        //     } else {
+        //         console.log("no user")
+        //     }
+        // }) 
+
+        firebase.auth().signOut()
+        .then(() => {
+            // Sign-out successful.
+            setIsLoggedIn(false)
+            setShowRegisterForm(false)
+            console.log("out")
+        }).catch(function(error) {
+            // An error happened.
+            console.log(error)
+        })
+    }
 
     return (
         <>
             <div className="header">
                 <Navigation />
                 <h2 className="animal-title">Home</h2>
+                {currentUser.email && <p className="signed-in-as">Signed in as <br/>{currentUser.email}</p>}
             </div>
-            {!isLoggedIn ? 
-                showRegisterForm ? 
-                    <div>
-                        <p>Register</p>
-                        <form onSubmit={handleRegister}>
-                            <label>Email Address:</label>
-                            <input type="text" value={registerEmail} onChange={(e) => setRegisterEmail(e.target.value)} />
-                            <label>Password:</label>
-                            <input type="text" value={registerPassword} onChange={(e) => setRegisterPassword(e.target.value)} />
-                            <input type="submit" value="Register" />
-                        </form>
-                        <button onClick={() => setShowRegisterForm(false)}>Or click here to Login</button>    
-                    </div>
+            <div className="home-container">
+                {!isLoggedIn ? 
+                    showRegisterForm ? 
+                        <div>
+                            <p className="home-title">Register</p>
+                            <form onSubmit={handleRegister}>
+                                <label>Email Address:</label>
+                                <input type="text" value={registerEmail} onChange={(e) => setRegisterEmail(e.target.value)} /><br/>
+                                <label>Password:</label>
+                                <input type="password" value={registerPassword} onChange={(e) => setRegisterPassword(e.target.value)} /><br/>
+                                <label>Confirm Password:</label>
+                                <input type="password" value={confirmRegisterPassword} onChange={(e) => setConfirmRegisterPassword(e.target.value)} /><br/>
+                                <input className="home-button" type="submit" value="Register" />
+                            </form>
+                            <button className="home-button" onClick={() => setShowRegisterForm(false)}>Or click here to Login</button>    
+                        </div>
+                    :
+                        <div>
+                            <p className="home-title">Login</p>
+                            <form onSubmit={handleLogin}>
+                                <label>Email Address:</label>
+                                <input type="text" value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} /><br/>
+                                <label>Password:</label>
+                                <input type="password" value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} /><br/>
+                                <input className="home-button" type="submit" value="Login" />
+                            </form>
+                            <button className="home-button" onClick={() => setShowRegisterForm(true)}>Or click here to Register</button>    
+                        </div>
                 :
                     <div>
-                        <p>Login</p>
-                        <form onSubmit={handleLogin}>
-                            <label>Email Address:</label>
-                            <input type="text" value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} />
-                            <label>Password:</label>
-                            <input type="text" value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} />
-                            <input type="submit" value="Login" />
-                        </form>
-                        <button onClick={() => setShowRegisterForm(true)}>Or click here to Register</button>    
+                        <p className="home-title">Welcome {currentUser.email}!</p>
+                        <button className="home-button" onClick={() => handleLogOut()}>Click here to Log out</button> 
                     </div>
-            :
-            <p>Welcome!</p>}
-            <p>Go to <Link to="/bugs">Bugs</Link> or <Link to="/fish">Fish</Link> to get and click their names to get information about 
-                any fish or Bug in Animal Crossing! </p>
-            <p>Also log in with an Email Address to keep track of bugs and fish collected.</p>
+                }
+                <p className="home-text">Go to <Link to="/bugs">Bugs</Link> or <Link to="/fish">Fish</Link> to get and click their names to get information about 
+                    any fish or Bug in Animal Crossing! </p>
+                <p className="home-text">Also log in with an Email Address to keep track of what bugs and fish you've collected.</p>
+            </div>
         </>
     )
 }

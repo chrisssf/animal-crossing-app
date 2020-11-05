@@ -37,7 +37,7 @@ const Animal = ({ animalCategory }) => {
   const [ currentUser, setCurrentUser ] = useState("")
 
   useEffect(() =>{
-    fetch('http://acnhapi.com/v1/' + animalCategory)
+    fetch('https://acnhapi.com/v1/' + animalCategory)
       .then(res => res.json())
       .then(animals => setAllAnimalsData(animals))
       .then(() => getAnimalsCollectedFromDatabase())
