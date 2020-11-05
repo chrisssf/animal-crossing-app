@@ -188,7 +188,7 @@ const Home = () => {
                         <button className="home-button" onClick={() => handleLogOut()}>Click here to Log out</button> 
                     </div>
                 }
-                <p className="home-text">Go to <Link to="/bugs">Bugs</Link> or <Link to="/fish">Fish</Link> to get and click their names to get information about 
+                <p className="home-text">Go to <Link to="/bugs">Bugs</Link> or <Link to="/fish">Fish</Link> and click their names to get information about 
                     any fish or Bug in Animal Crossing! </p>
                 <p className="home-text">Also log in with an Email Address to keep track of what bugs and fish you've collected.</p>
             </div>

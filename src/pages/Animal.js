@@ -47,7 +47,7 @@ const Animal = ({ animalCategory }) => {
     // getAnimalsCollectedFromDatabase()
   }, [])
 
-  const updateCollectedAnimalsinDB = (changeThisCollectedAniamls) => {
+  const updateCollectedAnimalsinDB = (collectedAnimalsForDB) => {
     let databaseField = ""
   
     if(animalCategory === "bugs") {
@@ -59,12 +59,12 @@ const Animal = ({ animalCategory }) => {
       // firebase.auth().onAuthStateChanged((user) => {
       //   if (user) {
       //     const userRef = db.collection("users").doc(user.uid)
-      //     return userRef.update({[databaseField]: changeThisCollectedAniamls})
+      //     return userRef.update({[databaseField]: collectedAnimalsForDB})
       //     .catch(error => console.log(error))
       //   }
       // })
       const userRef = db.collection("users").doc(currentUser.uid)
-      return userRef.update({[databaseField]: changeThisCollectedAniamls})
+      return userRef.update({[databaseField]: collectedAnimalsForDB})
       .catch(error => console.log(error))
   }
 

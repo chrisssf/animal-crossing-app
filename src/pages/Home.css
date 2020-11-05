@@ -62,7 +62,7 @@ input {
      background-color: red;
      color: white;
      font-size: 14px;
-     width: fit-content;
+     max-width: 85vw;
      margin: auto;
      padding: 10px;
      /* border-radius: 2%; */
