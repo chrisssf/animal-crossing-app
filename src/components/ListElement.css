@@ -36,6 +36,17 @@ table {
     width: 40px;
   }
 
+  .art-checkbox {
+
+    background-color: black;
+
+    background-image: url("../assets/tick.png");
+    background-size: cover;
+    border: 1px solid black;
+    height: 40px;
+    width: 40px;
+  }
+
   .empty-checkbox {
     border: 1px solid black;
     height: 40px;

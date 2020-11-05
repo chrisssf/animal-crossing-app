@@ -146,21 +146,22 @@ const Checklist = ({ listType }) => {
 
   const showTotalChecked = () => {
     return (
-      <p>Collected: {checkedItems.length} / {Object.keys(apiData).length} </p>
+      <p className="checklist-text"><b>Collected: {checkedItems.length} / {Object.keys(apiData).length} </b></p>
     )
   }
 
   return (
-    <div className="animal-container">
-      <div className="header">
-        <Navigation />
-        <h2 className="animal-title">{listType}</h2>
-        {currentUser.email && <p className="signed-in-as">Signed in as <br/>{currentUser.email}</p>}
-      </div>
-      <div className={listType + "-container"}>
-        {apiDataRetreived && showTotalChecked()}
-        {apiDataRetreived && populateChecklist()}
-      </div>
+    <div className="item-container">
+        <div className="header">
+            <Navigation />
+            <h2 className="item-title">{listType}</h2>
+            {currentUser.email && <p className="signed-in-as">Signed in as <br/>{currentUser.email}</p>}
+        </div>
+        <div className={listType + "-container"}>
+            <p className="checklist-text">Click on a name to get more information about that item!</p>
+            {apiDataRetreived && showTotalChecked()}
+            {apiDataRetreived && populateChecklist()}
+        </div>
     </div>
   )
 }

@@ -50,6 +50,7 @@ const Home = () => {
                 const dataToAdd = {
                     fish_checked: [],
                     bugs_checked: [],
+                    art_checked: [],
                     // name: registerName
                 }
                 const addUser = await db.collection("users").doc(data.user.uid).set(dataToAdd)
@@ -188,8 +189,8 @@ const Home = () => {
                         <button className="home-button" onClick={() => handleLogOut()}>Click here to Log out</button> 
                     </div>
                 }
-                <p className="home-text">Go to <Link to="/bugs">Bugs</Link> or <Link to="/fish">Fish</Link> and click their names to get information about 
-                    any fish or Bug in Animal Crossing! </p>
+                <p className="home-text">Go to <Link to="/bugs">Bugs</Link>, <Link to="/fish">Fish</Link> or <Link to="/art">Art</Link> and click on a name to get information about 
+                    any fish, bug or piece of art in Animal Crossing! </p>
                 <p className="home-text">Also log in with an Email Address to keep track of what bugs and fish you've collected.</p>
             </div>
         </>

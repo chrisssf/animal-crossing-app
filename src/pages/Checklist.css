@@ -9,7 +9,7 @@
   
   }
   
-  .animal-title {
+  .item-title {
     font-weight: bold;
     font-size: 34px;
     text-transform: capitalize;
@@ -17,6 +17,13 @@
     padding: 25px 0;
     grid-area: title;
     justify-self: center;
+  }
+
+  .checklist-text {
+    font-size: 22px;
+    padding-top: 15px;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
   }
   
   .bugs-container {
@@ -38,6 +45,20 @@
   
     /* for fish........ */
     background-color: #6CB4EE;
+  
+    /* for bugs..... */
+    /* background-color: #FF6347; */
+  }
+
+  .art-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    background-color: green;
+  
+    /* for fish........ */
+    /* background-color: #6CB4EE; */
   
     /* for bugs..... */
     /* background-color: #FF6347; */
