@@ -14,6 +14,12 @@
     /* margin-top: 0; */
 }
 
+.dropdown-item {
+    font-size: 22px;
+    padding: 10px 0xp 10px 0px;
+    text-align: center;
+}
+
 #basic-nav-dropdown {
     padding: 0px
 }

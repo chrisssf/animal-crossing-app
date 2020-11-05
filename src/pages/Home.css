@@ -57,3 +57,13 @@ input {
     border-radius: 20px;
     text-decoration: none;
  }
+
+ .login-error {
+     background-color: red;
+     color: white;
+     font-size: 14px;
+     width: fit-content;
+     margin: auto;
+     padding: 10px;
+     /* border-radius: 2%; */
+ }

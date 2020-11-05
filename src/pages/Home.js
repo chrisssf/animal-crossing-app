@@ -17,6 +17,7 @@ const Home = () => {
     const [ confirmRegisterPassword, setConfirmRegisterPassword ] = useState("")
     const [ loginEmail, setLoginEmail ] = useState("");
     const [ loginPassword, setLoginPassword ] = useState("");
+    const [ loginError, setLoginError ] = useState("")
     const [ showRegisterForm, setShowRegisterForm ] = useState(false)
     const [ isLoggedIn, setIsLoggedIn ] = useState(false)
     const [ currentUser, setCurrentUser ] = useState({})
@@ -53,16 +54,18 @@ const Home = () => {
                 }
                 const addUser = await db.collection("users").doc(data.user.uid).set(dataToAdd)
                 setIsLoggedIn(true)
+                setRegisterEmail("")
+                setRegisterPassword("")
+                setConfirmRegisterPassword("")
+                setLoginError("")
             })
-            .catch(error => console.log(error))
+            .catch(error => handleLoginError(error))
 
-            setRegisterEmail("")
-            setRegisterPassword("")
-            setConfirmRegisterPassword("")
+            
 
         }
         else {
-            console.log("Passwords don't match")
+            setLoginError("Passwords do not match. Please try again")
         }
     }
 
@@ -80,8 +83,9 @@ const Home = () => {
             setLoginEmail("")
             setLoginPassword("")
             setIsLoggedIn(true)
+            setLoginError("")
         })
-        .catch(error => console.log(error))
+        .catch(error => handleLoginError(error))
 
         
 
@@ -122,6 +126,25 @@ const Home = () => {
         })
     }
 
+    const handleLoginError = (errorMessage) => {
+        switch (errorMessage.code) {
+            case "auth/wrong-password":
+                setLoginError("The password is invalid. Please try again")
+                break;
+            case "auth/invalid-email":
+                setLoginError("The email address is badly formatted. Please enter a valid Email address")
+                break;
+            case "auth/user-not-found":
+                setLoginError("This Email address doesn't match any users. Please check your Email address or Register")
+                break
+            case "auth/weak-password":
+                setLoginError("Password must be at least 6 characters")
+                break
+            case "auth/email-already-in-use":
+                setLoginError("The email address is already in use by another account.")
+            }
+    }
+
     return (
         <>
             <div className="header">
@@ -136,11 +159,12 @@ const Home = () => {
                             <p className="home-title">Register</p>
                             <form onSubmit={handleRegister}>
                                 <label>Email Address:</label>
-                                <input type="text" value={registerEmail} onChange={(e) => setRegisterEmail(e.target.value)} /><br/>
+                                <input type="text" required value={registerEmail} onChange={(e) => setRegisterEmail(e.target.value)} /><br/>
                                 <label>Password:</label>
-                                <input type="password" value={registerPassword} onChange={(e) => setRegisterPassword(e.target.value)} /><br/>
+                                <input type="password" required value={registerPassword} onChange={(e) => setRegisterPassword(e.target.value)} /><br/>
                                 <label>Confirm Password:</label>
-                                <input type="password" value={confirmRegisterPassword} onChange={(e) => setConfirmRegisterPassword(e.target.value)} /><br/>
+                                <input type="password" required value={confirmRegisterPassword} onChange={(e) => setConfirmRegisterPassword(e.target.value)} /><br/>
+                                {loginError && <p className="login-error">Error: {loginError}</p>}
                                 <input className="home-button" type="submit" value="Register" />
                             </form>
                             <button className="home-button" onClick={() => setShowRegisterForm(false)}>Or click here to Login</button>    
@@ -150,9 +174,10 @@ const Home = () => {
                             <p className="home-title">Login</p>
                             <form onSubmit={handleLogin}>
                                 <label>Email Address:</label>
-                                <input type="text" value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} /><br/>
+                                <input type="text" required value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} /><br/>
                                 <label>Password:</label>
-                                <input type="password" value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} /><br/>
+                                <input type="password" required value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} /><br/>
+                                {loginError && <p className="login-error">Error: {loginError}</p>}
                                 <input className="home-button" type="submit" value="Login" />
                             </form>
                             <button className="home-button" onClick={() => setShowRegisterForm(true)}>Or click here to Register</button>    
